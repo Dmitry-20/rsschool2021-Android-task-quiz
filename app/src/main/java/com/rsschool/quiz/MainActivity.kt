@@ -6,7 +6,7 @@ import android.os.Bundle
 import androidx.fragment.app.Fragment
 import com.rsschool.quiz.databinding.ActivityMainBinding
 
-class MainActivity : AppCompatActivity(), QuizInterfase {
+class MainActivity : AppCompatActivity(), QuizInterf {
 
     private lateinit var binding: ActivityMainBinding
     private lateinit var viewPagerAdapter: ViewPagerAdapter

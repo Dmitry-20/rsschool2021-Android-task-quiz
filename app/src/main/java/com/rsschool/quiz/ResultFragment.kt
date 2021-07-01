@@ -12,7 +12,7 @@ import com.rsschool.quiz.databinding.FragmentResultBinding
 class ResultFragment : Fragment() {
 
     private var binding: FragmentResultBinding? = null
-    private var hostQuiz: HostQuiz? = null
+    private var quizInterf: QuizInterf? = null
 
     override fun onCreateView(
         inflater: LayoutInflater, container: ViewGroup?,
@@ -31,19 +31,19 @@ class ResultFragment : Fragment() {
     }
 
     private fun initView() {
-        binding?.result?.text = hostQuiz?.getResult()
+        binding?.result?.text = quizInterf?.getResult()
     }
 
     private fun initAction() {
         binding?.close?.setOnClickListener {
-            hostQuiz?.closeApp()
+            quizInterf?.closeApp()
         }
 
         binding?.back?.setOnClickListener {
-            hostQuiz?.update()
+            quizInterf?.update()
         }
         binding?.share?.setOnClickListener {
-            hostQuiz?.sendResult()
+            quizInterf?.sendResult()
         }
     }
 
@@ -56,8 +56,8 @@ class ResultFragment : Fragment() {
 
     override fun onAttach(context: Context) {
         super.onAttach(context)
-        if (activity is HostQuiz) {
-            hostQuiz = activity as HostQuiz
+        if (activity is QuizInterf) {
+            quizInterf = activity as QuizInterf
         } else {
             throw RuntimeException(activity.toString() + " must implement HostQuiz interface")
         }
@@ -71,6 +71,6 @@ class ResultFragment : Fragment() {
 
     override fun onDetach() {
         super.onDetach()
-        hostQuiz = null
+        quizInterf = null
     }
 }

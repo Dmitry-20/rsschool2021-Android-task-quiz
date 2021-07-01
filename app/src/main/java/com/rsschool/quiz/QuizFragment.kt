@@ -17,8 +17,8 @@ class QuizFragment : Fragment() {
     private var position: Int = 0
     private var theme: Int = 0
     private var statusBarColor: Int = 0
-    private var question: Question? = null
-    private var hostQuiz: HostQuiz? = null
+    private var resursQuiz: ResursQuiz? = null
+    private var quizInterf: QuizInterf? = null
 
     private var answerID: Int = 0
 
@@ -30,19 +30,19 @@ class QuizFragment : Fragment() {
             theme = it.getInt(THEME)
             position = it.getInt(POSITION)
             statusBarColor = it.getInt(STATUS_BAR_COLOR)
-            question = it.getSerializable(QUESTION) as Question?
+            resursQuiz = it.getSerializable(QUESTION) as ResursQuiz?
         }
     }
 
     override fun onDetach() {
         super.onDetach()
-        hostQuiz = null
+        quizInterf = null
     }
 
     override fun onAttach(context: Context) {
         super.onAttach(context)
-        if (activity is HostQuiz) {
-            hostQuiz = activity as HostQuiz
+        if (activity is QuizInterf) {
+            quizInterf = activity as QuizInterf
         } else {
             throw RuntimeException(activity.toString() + " must implement HostQuiz interface")
         }
@@ -73,14 +73,14 @@ class QuizFragment : Fragment() {
 
     private fun initActions() {
         binding?.nextButton?.setOnClickListener {
-            hostQuiz?.userAnswer(position, answerID)
-            hostQuiz?.leafFragment(true)
+            quizInterf?.userAnswer(position, answerID)
+            quizInterf?.leafFragment(true)
         }
         binding?.previousButton?.setOnClickListener {
-            hostQuiz?.leafFragment(false)
+            quizInterf?.leafFragment(false)
         }
         binding?.toolbar?.setNavigationOnClickListener {
-            hostQuiz?.leafFragment(false)
+            quizInterf?.leafFragment(false)
         }
 
         binding?.radioGroup?.setOnCheckedChangeListener { _, checkedId ->
@@ -107,25 +107,25 @@ class QuizFragment : Fragment() {
             binding?.previousButton?.isEnabled = false
         }
         if (position == 4) binding?.nextButton?.text = requireContext().getString(R.string.submit)
-        binding?.question?.text = question?.question
+        binding?.question?.text = resursQuiz?.question
 
-        binding?.optionOne?.text = question?.answers?.get(0)
-        binding?.optionTwo?.text = question?.answers?.get(1)
-        binding?.optionThree?.text = question?.answers?.get(2)
-        binding?.optionFour?.text = question?.answers?.get(3)
-        binding?.optionFive?.text = question?.answers?.get(4)
+        binding?.optionOne?.text = resursQuiz?.answers?.get(0)
+        binding?.optionTwo?.text = resursQuiz?.answers?.get(1)
+        binding?.optionThree?.text = resursQuiz?.answers?.get(2)
+        binding?.optionFour?.text = resursQuiz?.answers?.get(3)
+        binding?.optionFive?.text = resursQuiz?.answers?.get(4)
 
     }
 
     companion object {
         @JvmStatic
-        fun newInstance(position: Int, question: Question, theme: Int, statusBarColor: Int) =
+        fun newInstance(position: Int, resursQuiz: ResursQuiz, theme: Int, statusBarColor: Int) =
             QuizFragment().apply {
                 arguments = Bundle().apply {
                     putInt(POSITION, position)
                     putInt(THEME, theme)
                     putInt(STATUS_BAR_COLOR, statusBarColor)
-                    putSerializable(QUESTION, question)
+                    putSerializable(QUESTION, resursQuiz)
                 }
             }
 
